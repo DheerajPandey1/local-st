@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="product.css">
+
+</head>
+<body>
+    <h1>Add to cart</h1>
+    <div class="contain">
+      <h1 id="total"></h1>
+      <div id="container"></div>
+     <a href="checkout.html"><button style="margin-top:10px;">proceed</button></a>
+    </div>
+    
+</body>
+</html>
+
+<script>
+
+    var addto=JSON.parse(localStorage.getItem("added"))
+    console.log(addto)
+
+    var total = addto.reduce(function (sum, elem, index, arr) {
+return sum + Number(elem.price);
+}, 0);
+
+var length = addto.length;
+console.log(length);
+
+console.log(total);
+
+document.querySelector("#total").innerText = ` you have ${length} items in cart and  total: ${total}`;  
+
+    dispayData(addto)
+    function dispayData(data){
+      data.forEach(function (element,index) {
+        //console.log(element,index)
+        var div=document.createElement("div")
+
+        var image=document.createElement("img")
+        image.setAttribute("src",element.image_url)
+
+        var name=document.createElement("p")
+        name.innerText=element.name
+
+        var price=document.createElement("p")
+        price.innerText=element.price
+
+        var strikedprice=document.createElement("p")
+        strikedprice.innerText=element.strike
+        
+        var button= document.createElement("button")
+
+        button.innerText="Remove"
+        button.style.color="red"
+        button.style.backgroundColor="offwhite"
+        button.style.border="none"
+        button.addEventListener("click",function(){
+          console.log("click me")
+           removefun(element,index)
+        })
+
+        div.append(image,name,price,strikedprice,button)
+
+        document.querySelector("#container").append(div)
+
+        
+  })
+
+  function removefun(element,index){
+   addto.splice(index,1)
+   localStorage.setItem("added",JSON.stringify(addto))
+   alert("item deleted to cart")
+   window.location.reload()
+  
+  }
+}
+</script>
